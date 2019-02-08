@@ -12,7 +12,7 @@
 
             <Button
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:background="@android:color/transparent"
                     android:id="@+id/button_1"
                     android:layout_width="0dp"
@@ -22,7 +22,7 @@
 
             <Button
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:id="@+id/button_2"
                     android:background="@android:color/transparent"
                     android:layout_width="0dp"
@@ -32,7 +32,7 @@
 
             <Button
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:background="@android:color/transparent"
                     android:id="@+id/button_3"
                     android:layout_width="0dp"
@@ -49,7 +49,7 @@
 
             <Button
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:background="@android:color/transparent"
                     android:id="@+id/button_4"
                     android:layout_width="0dp"
@@ -59,7 +59,7 @@
 
             <Button
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:background="@android:color/transparent"
                     android:id="@+id/button_5"
                     android:layout_width="0dp"
@@ -69,7 +69,7 @@
 
             <Button
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:background="@android:color/transparent"
                     android:id="@+id/button_6"
                     android:layout_width="0dp"
@@ -86,7 +86,7 @@
 
             <Button
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:background="@android:color/transparent"
                     android:id="@+id/button_7"
                     android:layout_width="0dp"
@@ -96,7 +96,7 @@
 
             <Button
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:background="@android:color/transparent"
                     android:id="@+id/button_8"
                     android:layout_width="0dp"
@@ -106,7 +106,7 @@
 
             <Button
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:background="@android:color/transparent"
                     android:id="@+id/button_9"
                     android:layout_width="0dp"
@@ -131,7 +131,7 @@
 
             <Button
                     android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
+                    android:textSize="24sp"
                     android:background="@android:color/transparent"
                     android:id="@+id/button_0"
                     android:layout_width="0dp"

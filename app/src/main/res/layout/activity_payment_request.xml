@@ -19,6 +19,7 @@
             <Button android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
+                    android:id="@+id/button_to_pay_request"
                     android:textSize="18sp"
                     android:layout_marginEnd="15dp"
                     android:background="@android:color/transparent"

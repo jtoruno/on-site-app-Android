@@ -1,12 +1,16 @@
 package com.zimplifica.siteappandroid.utils
 
 import android.content.Context
+import android.os.Build
+import android.os.VibrationEffect
+import android.os.Vibrator
 import android.view.inputmethod.InputConnection
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.util.SparseArray
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.view.animation.ScaleAnimation
 import android.widget.Button
 import android.widget.ImageButton
@@ -112,18 +116,35 @@ class MyKeyboard @JvmOverloads constructor(context: Context, attrs: AttributeSet
             val value = keyValues.get(v.getId())
             inputConnection!!.commitText(value, 1)
         }*/
+        /*
+        val vibratorService =  context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            vibratorService.vibrate(VibrationEffect.createOneShot(100, VibrationEffect.DEFAULT_AMPLITUDE))
+        }else{
+            vibratorService.vibrate(100)
+        }*/
+
+        val scale = AnimationUtils.loadAnimation(context, R.anim.btn_anim)
+        v.startAnimation(scale)
+
+        val default = "₡0"
+
         if(textView == null) return
         var ss = textView?.text ?: ""
         if(v.id === R.id.button_delete){
-            if(ss.isNotEmpty()){
+            if(ss.toString()!=default){
                 val newVal = ss.subSequence(0, ss.length-1)
                 textView?.text = newVal
             }
         }
         else{
-            val value = keyValues.get(v.id)
-            val newVal = ss.toString() + value
-            textView?.text = newVal
+            if (ss.toString()==default){
+                textView?.text = "₡" + keyValues.get(v.id)
+            }else{
+                val value = keyValues.get(v.id)
+                val newVal = ss.toString() + value
+                textView?.text = newVal
+            }
         }
 
     }

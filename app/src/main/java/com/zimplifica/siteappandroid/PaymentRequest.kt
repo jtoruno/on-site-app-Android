@@ -21,11 +21,15 @@ import android.view.Gravity
 import android.view.View
 import android.widget.*
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager
+import com.zimplifica.siteappandroid.Models.Bill
 import com.zimplifica.siteappandroid.Models.Card
 import com.zimplifica.siteappandroid.utils.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PaymentRequest : AppCompatActivity() {
     lateinit var noContactsTxt : TextView
+    lateinit var btnToPay : Button
     lateinit var recyclerView: RecyclerView
     private val PERMISSIONS_REQUEST_READ_CONTACTS = 100
     private val REQUEST_CODE = 300
@@ -37,6 +41,7 @@ class PaymentRequest : AppCompatActivity() {
     lateinit var contactAdapter : ContactsAdapter
     lateinit var qrImg : ImageView
     lateinit var userTxt : EditText
+    lateinit var description : EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +51,9 @@ class PaymentRequest : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         recyclerView = findViewById(R.id.recycler_contact_list)
+        btnToPay = findViewById(R.id.button_to_pay_request)
         searchView = findViewById(R.id.contacts_search_view)
+        description = findViewById(R.id.editText2)
         listView = findViewById(R.id.list_view_payment)
         userTxt = findViewById(R.id.user_text_view)
         splitRecyclerView = findViewById(R.id.recycler_split_contact)
@@ -93,6 +100,18 @@ class PaymentRequest : AppCompatActivity() {
         qrImg = findViewById(R.id.imageView4)
         qrImg.setOnClickListener {
             startActivityForResult(Intent(this,QR::class.java), REQUEST_CODE)
+        }
+        btnToPay.setOnClickListener {
+            val intent = Intent(this, PaymentBill::class.java)
+            val date = Date()
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy").format(date)
+            val hourFormat = SimpleDateFormat("HH:mm").format(date)
+            val model = Bill(UUID.randomUUID(),userTxt.text.toString(),
+                description.text.toString(),"₡ 2.550,00","Francisco Córdoba Rojas",
+                dateFormat, hourFormat)
+            intent.putExtra("bill", model)
+            startActivity(intent)
+            finish()
         }
     }
 
