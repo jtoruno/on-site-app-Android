@@ -16,11 +16,16 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".PaymentBill"
+        <activity android:name=".ActivityScreen"
                   android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".QR"
-                  android:screenOrientation="portrait">
+        <activity
+                android:name=".PaymentBill"
+                android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".QR"
+                android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".Home"

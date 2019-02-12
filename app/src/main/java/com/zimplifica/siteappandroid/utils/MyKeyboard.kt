@@ -133,8 +133,13 @@ class MyKeyboard @JvmOverloads constructor(context: Context, attrs: AttributeSet
         var ss = textView?.text ?: ""
         if(v.id === R.id.button_delete){
             if(ss.toString()!=default){
-                val newVal = ss.subSequence(0, ss.length-1)
-                textView?.text = newVal
+                if(ss.toString().length == 2){
+                    textView?.text = default
+                }
+                else{
+                    val newVal = ss.subSequence(0, ss.length-1)
+                    textView?.text = newVal
+                }
             }
         }
         else{

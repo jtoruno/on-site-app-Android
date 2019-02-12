@@ -71,6 +71,7 @@ class PaymentBill : AppCompatActivity() {
         val multiFormatWriter = MultiFormatWriter()
         try {
             val bitMatrix = multiFormatWriter.encode(message,BarcodeFormat.QR_CODE, 200, 200)
+            /*
             val width = bitMatrix.width
             val height = bitMatrix.height
 
@@ -80,17 +81,15 @@ class PaymentBill : AppCompatActivity() {
                     if (bitMatrix.get(x, y)) {
                         pixels[y * width + x] = R.color.colorAccent
                     }
-
                 }
             }
-
             val bitmapGen = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-            bitmapGen.setPixels(pixels, 0, width, 0,0, width, height)
+            bitmapGen.setPixels(pixels, 0, width, 0,0, width, height)*/
 
-            //val barcodeEncoder = BarcodeEncoder()
-            //val bitmap = barcodeEncoder.createBitmap(bitMatrix)
+            val barcodeEncoder = BarcodeEncoder()
+            val bitmap = barcodeEncoder.createBitmap(bitMatrix)
 
-            qrImage.setImageBitmap(bitmapGen)
+            qrImage.setImageBitmap(bitmap)
         }
         catch (e : WriterException){
             e.printStackTrace()

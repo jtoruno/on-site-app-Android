@@ -59,6 +59,9 @@ class PaymentRequest : AppCompatActivity() {
         splitRecyclerView = findViewById(R.id.recycler_split_contact)
         noContactsTxt = findViewById(R.id.textView4)
         noContactsTxt.visibility = View.GONE
+        val title = this.intent.getStringExtra("amount")
+        toolbar.title =  "₡" + String.format("%,.2f", title.toDouble())
+
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
         val dividerItem = DividerItemDecoration(recyclerView.context, layoutManager.orientation)
@@ -102,16 +105,29 @@ class PaymentRequest : AppCompatActivity() {
             startActivityForResult(Intent(this,QR::class.java), REQUEST_CODE)
         }
         btnToPay.setOnClickListener {
-            val intent = Intent(this, PaymentBill::class.java)
-            val date = Date()
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy").format(date)
-            val hourFormat = SimpleDateFormat("HH:mm").format(date)
-            val model = Bill(UUID.randomUUID(),userTxt.text.toString(),
-                description.text.toString(),"₡ 2.550,00","Francisco Córdoba Rojas",
-                dateFormat, hourFormat)
-            intent.putExtra("bill", model)
-            startActivity(intent)
-            finish()
+            if(userTxt.text.isEmpty()){
+                val view = findViewById<View>(android.R.id.content)
+                val snackBar = Snackbar.make(view,"Ingrese un usuario.", Snackbar.LENGTH_LONG)
+                snackBar.view.setOnClickListener {
+                    snackBar.dismiss()
+                }
+                snackBar.show()
+            }
+            else{
+                val intent = Intent(this, PaymentBill::class.java)
+                val date = Date()
+                val dateFormat = SimpleDateFormat("dd/MM/yyyy").format(date)
+                val hourFormat = SimpleDateFormat("HH:mm").format(date)
+                val model = Bill(UUID.randomUUID(),userTxt.text.toString(),
+                    description.text.toString(),"₡" + String.format("%,.2f", title.toDouble()),"Francisco Córdoba Rojas",
+                    dateFormat, hourFormat)
+                intent.putExtra("bill", model)
+                val returnIntent = Intent()
+                returnIntent.putExtra("bill",model )
+                setResult(Activity.RESULT_OK, returnIntent)
+                startActivity(intent)
+                finish()
+            }
         }
     }
 

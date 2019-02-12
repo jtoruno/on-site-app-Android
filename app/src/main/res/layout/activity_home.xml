@@ -13,6 +13,7 @@
         <android.support.v7.widget.Toolbar android:layout_width="match_parent"
                                            android:layout_height="wrap_content">
             <ImageButton
+                    android:id="@+id/activity_home_btn"
                     android:layout_gravity="right"
                     android:layout_marginEnd="15dp"
                     android:layout_width="wrap_content"
@@ -34,6 +35,7 @@
     </android.support.design.widget.AppBarLayout>
     <TextView
             android:text="₡0"
+            android:maxLength="7"
             android:textColor="@color/colorAccent"
             android:textAlignment="center"
             android:layout_width="match_parent"
@@ -41,9 +43,9 @@
             android:id="@+id/textView" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             android:layout_marginTop="48dp" app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            android:textSize="40sp" android:textStyle="bold" android:layout_marginBottom="8dp"
+            android:textSize="70sp" android:textStyle="bold" android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/keyboard" app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintVertical_bias="0.0" android:gravity="center"/>
+            app:layout_constraintVertical_bias="0.5" android:gravity="center"/>
 
     <com.zimplifica.siteappandroid.utils.MyKeyboard
             android:layout_width="match_parent"
