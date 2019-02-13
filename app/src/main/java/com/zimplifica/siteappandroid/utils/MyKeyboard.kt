@@ -7,6 +7,7 @@ import android.os.Vibrator
 import android.view.inputmethod.InputConnection
 import android.text.TextUtils
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import android.util.SparseArray
 import android.view.View
@@ -17,6 +18,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.zimplifica.siteappandroid.R
+import org.fabiomsr.moneytextview.MoneyTextView
 
 
 class MyKeyboard @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) :
@@ -45,6 +47,7 @@ class MyKeyboard @JvmOverloads constructor(context: Context, attrs: AttributeSet
 
     private var textView : TextView? = null
 
+    private var moneytext : MoneyTextView? = null
 
     init {
         init(context, attrs)
@@ -128,7 +131,7 @@ class MyKeyboard @JvmOverloads constructor(context: Context, attrs: AttributeSet
         v.startAnimation(scale)
 
         val default = "₡0"
-
+        /*
         if(textView == null) return
         var ss = textView?.text ?: ""
         if(v.id === R.id.button_delete){
@@ -150,7 +153,34 @@ class MyKeyboard @JvmOverloads constructor(context: Context, attrs: AttributeSet
                 val newVal = ss.toString() + value
                 textView?.text = newVal
             }
+        }*/
+        val vibratorService =  context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        if (moneytext == null) return
+        var float = moneytext?.amount!!.toInt()
+        val string = float.toString()
+        if(v.id === R.id.button_delete){
+            if (string.length == 1){
+                moneytext?.amount = 0F
+            }
+            else{
+                val newVal = string.subSequence(0, string.length-1)
+                moneytext?.amount = newVal.toString().toFloat()
+            }
         }
+        else{
+            if(string.length==6){
+                vibratorService.vibrate(80)
+                return
+            }
+            if(float == 0){
+                moneytext?.amount = keyValues.get(v.id).toFloat()
+            }
+            else{
+                val value = string + keyValues.get(v.id)
+                moneytext?.amount = value.toFloat()
+            }
+        }
+
 
     }
 
@@ -162,5 +192,9 @@ class MyKeyboard @JvmOverloads constructor(context: Context, attrs: AttributeSet
 
     fun setTextView(txt : TextView){
         this.textView = txt
+    }
+
+    fun setMoneyTextView(item : MoneyTextView){
+        this.moneytext = item
     }
 }// constructors

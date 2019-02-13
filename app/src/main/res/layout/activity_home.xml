@@ -33,6 +33,20 @@
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
+    <org.fabiomsr.moneytextview.MoneyTextView
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            app:symbol="₡" app:baseTextSize="60sp"
+            android:textAlignment="center"
+            app:baseTextColor="@color/colorAccent"
+            app:format="###,###"
+            app:symbolMargin="6dp"
+            android:id="@+id/money_text_view"
+            app:includeDecimalSeparator="false"
+            app:layout_constraintBottom_toTopOf="@+id/keyboard"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+            app:amount="0" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
+    <!--
     <TextView
             android:text="₡0"
             android:maxLength="7"
@@ -43,9 +57,10 @@
             android:id="@+id/textView" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             android:layout_marginTop="48dp" app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            android:textSize="70sp" android:textStyle="bold" android:layout_marginBottom="8dp"
+            android:textSize="60sp"  android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/keyboard" app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintVertical_bias="0.5" android:gravity="center"/>
+     -->
 
     <com.zimplifica.siteappandroid.utils.MyKeyboard
             android:layout_width="match_parent"
@@ -72,7 +87,7 @@
                 android:text="Solicitar Pago"
                 android:background="@drawable/button_border"
                 android:textColor="@color/colorAccent"
-                android:textAllCaps="false"/>
+                android:textAllCaps="false" android:id="@+id/request_btn_home"/>
         <Button android:layout_width="0dp"
                 android:layout_marginStart="5dp"
                 android:layout_height="wrap_content"

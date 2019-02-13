@@ -1,6 +1,8 @@
 package com.zimplifica.siteappandroid.utils
 
 import android.content.Context
+import android.support.constraint.ConstraintLayout
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +38,7 @@ class ActivityAdapter(context: Context) : BaseAdapter() {
                 }
                 TYPE_HEADER -> {
                     view = mInflater.inflate(R.layout.header_item_activity, null)
+                    view.isEnabled = false
                     holder.hourText = view.findViewById(R.id.date_activity_header)
                 }
             }
@@ -99,6 +102,5 @@ class ActivityAdapter(context: Context) : BaseAdapter() {
         var categoryText : TextView? = null
         var hourText : TextView? = null
         var amountText : TextView? = null
-
     }
 }

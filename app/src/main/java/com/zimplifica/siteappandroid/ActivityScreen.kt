@@ -1,13 +1,17 @@
 package com.zimplifica.siteappandroid
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v7.widget.Toolbar
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.ListView
 import com.zimplifica.siteappandroid.Models.Bill
 import com.zimplifica.siteappandroid.utils.ActivityAdapter
+import com.zimplifica.siteappandroid.utils.OnItemClickListener
 import java.util.*
 
 class ActivityScreen : AppCompatActivity() {
@@ -44,6 +48,15 @@ class ActivityScreen : AppCompatActivity() {
         tabLayout.addTab(tabLayout.newTab().setText("Últimos 7 días"),true)
         tabLayout.addTab(tabLayout.newTab().setText("Mes Actual"), false)
         tabLayout.addTab(tabLayout.newTab().setText("Filtrar por Fecha"), false)
+        listview.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            if(adapter.getItemViewType(position)==0){
+                val bill = adapter.getItem(position)
+                Log.e("Activity", bill.enterprise)
+                val intent = Intent(this, PaymentBill::class.java)
+                intent.putExtra("bill", bill)
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

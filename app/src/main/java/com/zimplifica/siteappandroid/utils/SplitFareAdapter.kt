@@ -21,6 +21,9 @@ class SplitFareAdapter(val ctx : Context, val items : MutableList<ContactModel>)
     override fun onBindViewHolder(p0: CardViewHolder, p1: Int) {
         val contact = items[p1]
         p0.name.text = contact.name
+        p0.name.setOnClickListener {
+            deleteContact(contact)
+        }
     }
 
     class CardViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){

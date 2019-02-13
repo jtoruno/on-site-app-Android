@@ -2,15 +2,23 @@ package com.zimplifica.siteappandroid
 
 import android.Manifest
 import android.app.Activity
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
+import android.graphics.Paint
+import android.media.RingtoneManager
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.support.design.widget.Snackbar
 import android.support.v4.app.ActivityCompat
+import android.support.v4.app.NotificationCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.*
@@ -28,20 +36,21 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PaymentRequest : AppCompatActivity() {
-    lateinit var noContactsTxt : TextView
+    //lateinit var noContactsTxt : TextView
     lateinit var btnToPay : Button
-    lateinit var recyclerView: RecyclerView
-    private val PERMISSIONS_REQUEST_READ_CONTACTS = 100
+    //lateinit var recyclerView: RecyclerView
+    private val CONTACTS_REQUEST = 100
     private val REQUEST_CODE = 300
     private var cardList  = mutableListOf<Card>()
     lateinit var listView : ListView
     lateinit var splitRecyclerView : RecyclerView
     lateinit var splitAdapter : SplitFareAdapter
-    lateinit var searchView : SearchView
+    //lateinit var searchView : SearchView
     lateinit var contactAdapter : ContactsAdapter
     lateinit var qrImg : ImageView
     lateinit var userTxt : EditText
     lateinit var description : EditText
+    lateinit var splitTxt : TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,23 +59,25 @@ class PaymentRequest : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         supportActionBar!!.setDisplayShowHomeEnabled(true)
-        recyclerView = findViewById(R.id.recycler_contact_list)
+        //recyclerView = findViewById(R.id.recycler_contact_list)
         btnToPay = findViewById(R.id.button_to_pay_request)
-        searchView = findViewById(R.id.contacts_search_view)
+        //searchView = findViewById(R.id.contacts_search_view)
         description = findViewById(R.id.editText2)
         listView = findViewById(R.id.list_view_payment)
         userTxt = findViewById(R.id.user_text_view)
+        splitTxt = findViewById(R.id.split_pay_txt)
         splitRecyclerView = findViewById(R.id.recycler_split_contact)
-        noContactsTxt = findViewById(R.id.textView4)
-        noContactsTxt.visibility = View.GONE
+        //noContactsTxt = findViewById(R.id.textView4)
+        //noContactsTxt.visibility = View.GONE
         val title = this.intent.getStringExtra("amount")
         toolbar.title =  "₡" + String.format("%,.2f", title.toDouble())
 
         val layoutManager = LinearLayoutManager(this)
+        /*
         recyclerView.layoutManager = layoutManager
         val dividerItem = DividerItemDecoration(recyclerView.context, layoutManager.orientation)
-        recyclerView.addItemDecoration(dividerItem)
-        requestPermission()
+        recyclerView.addItemDecoration(dividerItem)*/
+        //requestPermission()
         cardList.add(Card("visa","9492"))
         cardList.add(Card("mastercard","6416"))
         listView.adapter = CardAdapter(this, R.layout.card_row, cardList.subList(0,1))
@@ -74,19 +85,14 @@ class PaymentRequest : AppCompatActivity() {
             recyclerDialog()
         }
         val contactList = mutableListOf<ContactModel>()
-        /*
-        contactList.add(ContactModel("Josue T", "89626004"))
-        contactList.add(ContactModel("Josue T", "89626004"))
-        contactList.add(ContactModel("Carlos Castro", "89626004"))
-        contactList.add(ContactModel("a", "89626004"))
-        contactList.add(ContactModel("Juan Perez", "89626004"))*/
         splitAdapter = SplitFareAdapter(this,contactList)
         val flowManager = FlowLayoutManager()
         flowManager.isAutoMeasureEnabled = true
         splitRecyclerView.layoutManager = flowManager
-        recyclerView.setHasFixedSize(true)
+        //recyclerView.setHasFixedSize(true)
         splitRecyclerView.adapter = splitAdapter
 
+        /*
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(p0: String?): Boolean {
                 contactAdapter.filter.filter(p0)
@@ -98,7 +104,7 @@ class PaymentRequest : AppCompatActivity() {
                 return false
             }
 
-        })
+        })*/
 
         qrImg = findViewById(R.id.imageView4)
         qrImg.setOnClickListener {
@@ -125,21 +131,41 @@ class PaymentRequest : AppCompatActivity() {
                 val returnIntent = Intent()
                 returnIntent.putExtra("bill",model )
                 setResult(Activity.RESULT_OK, returnIntent)
+                sendNotification("Pago realizado con éxito", "Su pago a ${model.enterprise} fue realizado de manera correcta. ")
                 startActivity(intent)
                 finish()
             }
         }
+        splitTxt.paintFlags = splitTxt.paintFlags or Paint.UNDERLINE_TEXT_FLAG
+        splitTxt.setOnClickListener {
+            val i = Intent(Intent.ACTION_PICK)
+            i.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
+            startActivityForResult(i, CONTACTS_REQUEST)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         Log.e("PaymentResult", requestCode.toString() + resultCode.toString())
         if(requestCode == REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 val result = data?.getStringExtra("qr")?: ""
                 userTxt.setText(result,  TextView.BufferType.EDITABLE)
             }
-        }else{
-            super.onActivityResult(requestCode, resultCode, data)
+        }
+        if(requestCode == CONTACTS_REQUEST && resultCode == Activity.RESULT_OK){
+            val uri = data?.data
+            val cursor = contentResolver.query(uri, null, null, null, null)
+            if(cursor!=null && cursor.moveToFirst()){
+                val phoneIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
+                val nameIndex = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)
+                val phone = cursor.getString(phoneIndex)
+                val name = cursor.getString(nameIndex)
+                val contact = ContactModel(name,phone, true)
+                splitAdapter.addContact(contact)
+                Log.e("REsult",phone + name)
+            }
+            cursor?.close()
         }
     }
     override fun onSupportNavigateUp(): Boolean {
@@ -179,6 +205,33 @@ class PaymentRequest : AppCompatActivity() {
         })
         alert.show()
     }
+
+    fun sendNotification(message : String, title : String){
+        val defaultSong = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val channelId = getString(R.string.default_notification_channel_id)
+        val notification = NotificationCompat.Builder(this, channelId)
+            .setSound(defaultSong)
+            .setSmallIcon(R.drawable.fruits)
+            .setDefaults(Notification.DEFAULT_LIGHTS or Notification.DEFAULT_SOUND or Notification.DEFAULT_VIBRATE)
+            .setContentTitle(title)
+            .setContentText(message)
+            .setAutoCancel(true)
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(message))
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            val channel = NotificationChannel(channelId,
+                "Channel human readable title",
+                NotificationManager.IMPORTANCE_DEFAULT)
+            manager.createNotificationChannel(channel)
+        }
+
+        manager.notify(/*notification id*/0,notification.build())
+    }
+
+
+    /*
 
     private fun getContacts():MutableList<ContactModel>  {
         val list = mutableListOf<ContactModel>()
@@ -292,5 +345,5 @@ class PaymentRequest : AppCompatActivity() {
                 return
             }
         }
-    }
+    }*/
 }

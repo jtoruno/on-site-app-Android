@@ -38,4 +38,6 @@ dependencies {
     implementation 'me.dm7.barcodescanner:zxing:1.9.8'
     //Zxing
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
+    //MoneyTextView
+    implementation 'org.fabiomsr:moneytextview:1.1.0'
 }

@@ -14,6 +14,7 @@ import android.graphics.Color
 import android.opengl.ETC1.getWidth
 import android.opengl.ETC1.getHeight
 import android.text.Html
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.google.zxing.common.BitMatrix
@@ -33,7 +34,7 @@ class PaymentBill : AppCompatActivity() {
     lateinit var dateTxt : TextView
     lateinit var hourTxt : TextView
     lateinit var finishBtn : Button
-
+    lateinit var divider : View
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_payment_bill)
@@ -45,12 +46,14 @@ class PaymentBill : AppCompatActivity() {
         idTxt = findViewById(R.id.textView9)
         cardView = findViewById(R.id.cardView2)
         userTxt = findViewById(R.id.textView12)
+        divider = findViewById(R.id.divider3)
         dateTxt = findViewById(R.id.textView13)
         hourTxt = findViewById(R.id.textView14)
         finishBtn = findViewById(R.id.button)
         cardView.elevation = 5F
         img.elevation = 10F
         img2.elevation = 10F
+        divider.elevation = 8F
         val billObject = this.intent.getSerializableExtra("bill") as Bill
         idTxt.text = Html.fromHtml("<b>ID: </b>"+ billObject.uuid.toString())
         descriptionTxt.text = billObject.enterprise
