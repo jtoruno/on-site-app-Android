@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.amulyakhare.textdrawable.TextDrawable
+import com.amulyakhare.textdrawable.util.ColorGenerator
 import com.zimplifica.siteappandroid.Models.Bill
 import com.zimplifica.siteappandroid.R
 import java.util.*
@@ -48,16 +50,28 @@ class ActivityAdapter(context: Context) : BaseAdapter() {
 
         if(rowType==TYPE_ITEM){
             val bill = mData[position]
-            if(bill.enterprise.contains("Agricultor")){
-                holder.companyImg?.setImageResource(R.drawable.fruits)
-            }
-            if(bill.enterprise.contains("Repuestos")){
-                holder.companyImg?.setImageResource(R.drawable.guacamaya_logo)
-            }
+            val generator = ColorGenerator.MATERIAL
+            val initials = bill.enterprise
+                .split(' ')
+                .mapNotNull { it.firstOrNull()?.toString() }
+                .reduce { acc, s -> acc + s }
+            val drawable = TextDrawable.builder()
+                .beginConfig()
+                .width(100)
+                .height(100)
+                .endConfig()
+                .buildRound(initials,generator.getColor(initials))
+            holder.companyImg?.setImageDrawable(drawable)
             holder.companyText?.text = bill.enterprise
             holder.descriptionText?.text = bill.description
             holder.hourText?.text = bill.hour
             holder.amountText?.text = bill.amount
+            if(bill.type){
+                holder.categoryText?.text = "Solicitud de Pago"
+            }
+            else{
+                holder.categoryText?.text = "Pago"
+            }
         }
         else if(rowType == TYPE_HEADER){
             holder.hourText?.text = mData[position].date

@@ -120,7 +120,7 @@
 
     </android.support.v7.widget.CardView>
     <Button
-            android:text="Finalizar"
+            android:text="Volver"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"
             android:textAllCaps="false"

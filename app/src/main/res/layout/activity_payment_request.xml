@@ -52,12 +52,25 @@
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text="Para :"
+                      android:layout_gravity="center_vertical"
                       android:textSize="15sp"
                       android:layout_marginTop="15dp"
                       android:layout_marginBottom="15dp"
                       android:layout_marginStart="20dp"
                       android:textStyle="bold"
                       android:textColor="@color/colorAccent"/>
+
+            <com.pchmn.materialchips.ChipsInput
+                    android:layout_marginStart="15dp"
+                    android:layout_weight="1"
+                    android:id="@+id/chips_input"
+                    app:hint="Nombre, Usuario, Email"
+                    app:showChipDetailed="false"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+            </com.pchmn.materialchips.ChipsInput>
+            <!--
             <EditText
                     android:id="@+id/user_text_view"
                     android:layout_marginStart="15dp"
@@ -70,6 +83,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:ems="10" android:textSize="15sp" android:hint="Nombre, Usuario, Email"/>
+            -->
             <ImageView
                     android:layout_marginEnd="15dp"
                     android:layout_gravity="center_vertical"
@@ -112,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="textPersonName"
                     android:ems="10"
-                    android:id="@+id/editText2" android:textSize="15sp" android:hint="cena, renta, etc."/>
+                    android:id="@+id/editText2"  android:hint="cena, renta, etc."/>
         </TableRow>
 
         <TableRow
@@ -128,6 +142,7 @@
 
         <TableRow
                 android:layout_width="match_parent"
+                android:id="@+id/payment_method_row"
                 android:layout_height="wrap_content">
             <TextView android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
@@ -158,6 +173,8 @@
                     android:padding="2dip" />
         </TableRow>
 
+        <!--
+
         <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -177,6 +194,7 @@
                     android:layout_width="260dp"
                     android:layout_height="wrap_content" android:layout_marginStart="15dp"/>
         </TableRow>
+        -->
 
     </TableLayout>
 

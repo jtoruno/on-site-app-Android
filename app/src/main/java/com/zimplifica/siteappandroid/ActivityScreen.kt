@@ -51,10 +51,15 @@ class ActivityScreen : AppCompatActivity() {
         listview.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
             if(adapter.getItemViewType(position)==0){
                 val bill = adapter.getItem(position)
-                Log.e("Activity", bill.enterprise)
-                val intent = Intent(this, PaymentBill::class.java)
-                intent.putExtra("bill", bill)
-                startActivity(intent)
+                if(bill.type){
+                    val intent = Intent(this, RequestBill::class.java)
+                    intent.putExtra("bill", bill)
+                    startActivity(intent)
+                }else{
+                    val intent = Intent(this, PaymentBill::class.java)
+                    intent.putExtra("bill", bill)
+                    startActivity(intent)
+                }
             }
         }
     }
@@ -79,7 +84,7 @@ class ActivityScreen : AppCompatActivity() {
         val iterator2 = dateList.iterator()
         while (iterator2.hasNext()){
             val oldValue = iterator2.next()
-            val header = Bill(UUID.randomUUID(),"", "","","",oldValue, "")
+            val header = Bill(UUID.randomUUID(),"", "","","",oldValue, "","", false)
             adapter.addHeader(header)
             val itModel = activityList.iterator()
             while (itModel.hasNext()){

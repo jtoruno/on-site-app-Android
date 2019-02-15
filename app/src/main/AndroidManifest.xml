@@ -16,8 +16,15 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ActivityScreen"
+        <activity android:name=".SideBar"
                   android:screenOrientation="portrait">
+        </activity>
+        <activity android:name=".RequestBill"
+                  android:screenOrientation="portrait">
+        </activity>
+        <activity
+                android:name=".ActivityScreen"
+                android:screenOrientation="portrait">
         </activity>
         <activity
                 android:name=".PaymentBill"

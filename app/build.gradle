@@ -40,4 +40,7 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.5.0'
     //MoneyTextView
     implementation 'org.fabiomsr:moneytextview:1.1.0'
+    //MaterialChipsInput
+    implementation 'com.github.pchmn:MaterialChipsInput:1.0.8'
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
 }

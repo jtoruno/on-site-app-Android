@@ -28,6 +28,11 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.*
+import com.amulyakhare.textdrawable.TextDrawable
+import com.amulyakhare.textdrawable.util.ColorGenerator
+import com.pchmn.materialchips.ChipsInput
+import com.pchmn.materialchips.model.Chip
+import com.pchmn.materialchips.model.ChipInterface
 import com.xiaofeng.flowlayoutmanager.FlowLayoutManager
 import com.zimplifica.siteappandroid.Models.Bill
 import com.zimplifica.siteappandroid.Models.Card
@@ -43,14 +48,18 @@ class PaymentRequest : AppCompatActivity() {
     private val REQUEST_CODE = 300
     private var cardList  = mutableListOf<Card>()
     lateinit var listView : ListView
-    lateinit var splitRecyclerView : RecyclerView
+    //lateinit var splitRecyclerView : RecyclerView
     lateinit var splitAdapter : SplitFareAdapter
     //lateinit var searchView : SearchView
     lateinit var contactAdapter : ContactsAdapter
     lateinit var qrImg : ImageView
-    lateinit var userTxt : EditText
+    //lateinit var userTxt : EditText
     lateinit var description : EditText
-    lateinit var splitTxt : TextView
+    //lateinit var splitTxt : TextView
+    lateinit var paymentRow : TableRow
+
+
+    lateinit var chipsInput : ChipsInput
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,17 +70,40 @@ class PaymentRequest : AppCompatActivity() {
         supportActionBar!!.setDisplayShowHomeEnabled(true)
         //recyclerView = findViewById(R.id.recycler_contact_list)
         btnToPay = findViewById(R.id.button_to_pay_request)
+
+
+        chipsInput = findViewById(R.id.chips_input)
+
+
         //searchView = findViewById(R.id.contacts_search_view)
         description = findViewById(R.id.editText2)
         listView = findViewById(R.id.list_view_payment)
-        userTxt = findViewById(R.id.user_text_view)
-        splitTxt = findViewById(R.id.split_pay_txt)
-        splitRecyclerView = findViewById(R.id.recycler_split_contact)
+        paymentRow = findViewById(R.id.payment_method_row)
+        //userTxt = findViewById(R.id.user_text_view)
+        //splitTxt = findViewById(R.id.split_pay_txt)
+        //splitRecyclerView = findViewById(R.id.recycler_split_contact)
         //noContactsTxt = findViewById(R.id.textView4)
         //noContactsTxt.visibility = View.GONE
         val title = this.intent.getStringExtra("amount")
         toolbar.title =  "₡" + String.format("%,.2f", title.toDouble())
-
+        val requestFlag = this.intent.getBooleanExtra("request", false)
+        val chipList = mutableListOf<Chip>()
+        if(requestFlag){
+            paymentRow.visibility = View.GONE
+            chipList.add(Chip("Walter Centeno","Usuario"))
+            chipList.add(Chip("Alonso Solís","Usuario"))
+            chipList.add(Chip("Rolando Fonseca","Usuario"))
+            chipList.add(Chip("Joel Campbell","Usuario"))
+            chipList.add(Chip("Hernán Medford","Usuario"))
+            chipList.add(Chip("Keylor Navas","Usuario"))
+        }else{
+            chipList.add(Chip(R.drawable.mc_logo,"McDonald's", "Restaurante"))
+            chipList.add(Chip("Na Praia", "Restaurante"))
+            chipList.add(Chip(R.drawable.ic_access_time_black_24dp,"Chancay", "Restaurante"))
+            chipList.add(Chip(R.drawable.dennys_logo,"Denny's", "Restaurante"))
+            chipList.add(Chip(R.drawable.dennys_logo,"Cinemark", "Cine"))
+        }
+        chipsInput.filterableList = chipList
         val layoutManager = LinearLayoutManager(this)
         /*
         recyclerView.layoutManager = layoutManager
@@ -84,6 +116,7 @@ class PaymentRequest : AppCompatActivity() {
         listView.setOnItemClickListener { _, _, _, _ ->
             recyclerDialog()
         }
+        /*
         val contactList = mutableListOf<ContactModel>()
         splitAdapter = SplitFareAdapter(this,contactList)
         val flowManager = FlowLayoutManager()
@@ -91,7 +124,7 @@ class PaymentRequest : AppCompatActivity() {
         splitRecyclerView.layoutManager = flowManager
         //recyclerView.setHasFixedSize(true)
         splitRecyclerView.adapter = splitAdapter
-
+        */
         /*
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(p0: String?): Boolean {
@@ -111,7 +144,7 @@ class PaymentRequest : AppCompatActivity() {
             startActivityForResult(Intent(this,QR::class.java), REQUEST_CODE)
         }
         btnToPay.setOnClickListener {
-            if(userTxt.text.isEmpty()){
+            if(chipsInput.selectedChipList.isEmpty()){
                 val view = findViewById<View>(android.R.id.content)
                 val snackBar = Snackbar.make(view,"Ingrese un usuario.", Snackbar.LENGTH_LONG)
                 snackBar.view.setOnClickListener {
@@ -120,28 +153,47 @@ class PaymentRequest : AppCompatActivity() {
                 snackBar.show()
             }
             else{
-                val intent = Intent(this, PaymentBill::class.java)
-                val date = Date()
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy").format(date)
-                val hourFormat = SimpleDateFormat("HH:mm").format(date)
-                val model = Bill(UUID.randomUUID(),userTxt.text.toString(),
-                    description.text.toString(),"₡" + String.format("%,.2f", title.toDouble()),"Francisco Córdoba Rojas",
-                    dateFormat, hourFormat)
-                intent.putExtra("bill", model)
-                val returnIntent = Intent()
-                returnIntent.putExtra("bill",model )
-                setResult(Activity.RESULT_OK, returnIntent)
-                sendNotification("Pago realizado con éxito", "Su pago a ${model.enterprise} fue realizado de manera correcta. ")
-                startActivity(intent)
-                finish()
+                val dialog = AlertDialog.Builder(this)
+                dialog.setTitle("Confirmación")
+                dialog.setMessage("¿Desea realizar la transacción?")
+                dialog.setPositiveButton("Confirmar"){
+                        _, _ ->
+                    val chip = chipsInput.selectedChipList[0]
+                    val date = Date()
+                    val dateFormat = SimpleDateFormat("dd/MM/yyyy").format(date)
+                    val hourFormat = SimpleDateFormat("HH:mm").format(date)
+                    val model = Bill(UUID.randomUUID(),chip.label,
+                        description.text.toString(),"₡" + String.format("%,.2f", title.toDouble()),"Francisco Córdoba Rojas",
+                        dateFormat, hourFormat, chip.info , requestFlag)
+
+                    val returnIntent = Intent()
+                    returnIntent.putExtra("bill",model )
+                    setResult(Activity.RESULT_OK, returnIntent)
+                    if (requestFlag){
+                        val intent = Intent(this,RequestBill::class.java)
+                        intent.putExtra("bill", model)
+                        startActivity(intent)
+                        finish()
+                    }
+                    else{
+                        sendNotification("Pago realizado con éxito", "Su pago a ${model.enterprise} fue realizado de manera correcta. ")
+                        val intent = Intent(this, PaymentBill::class.java)
+                        intent.putExtra("bill", model)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+                dialog.setNeutralButton("Cancelar"){_, _-> }
+                dialog.show()
             }
         }
+        /*
         splitTxt.paintFlags = splitTxt.paintFlags or Paint.UNDERLINE_TEXT_FLAG
         splitTxt.setOnClickListener {
             val i = Intent(Intent.ACTION_PICK)
             i.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
             startActivityForResult(i, CONTACTS_REQUEST)
-        }
+        }*/
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -150,9 +202,11 @@ class PaymentRequest : AppCompatActivity() {
         if(requestCode == REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 val result = data?.getStringExtra("qr")?: ""
-                userTxt.setText(result,  TextView.BufferType.EDITABLE)
+                chipsInput.addChip(result, "Otro")
+                //userTxt.setText(result,  TextView.BufferType.EDITABLE)
             }
         }
+        /*
         if(requestCode == CONTACTS_REQUEST && resultCode == Activity.RESULT_OK){
             val uri = data?.data
             val cursor = contentResolver.query(uri, null, null, null, null)
@@ -166,7 +220,7 @@ class PaymentRequest : AppCompatActivity() {
                 Log.e("REsult",phone + name)
             }
             cursor?.close()
-        }
+        }*/
     }
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
@@ -211,7 +265,7 @@ class PaymentRequest : AppCompatActivity() {
         val channelId = getString(R.string.default_notification_channel_id)
         val notification = NotificationCompat.Builder(this, channelId)
             .setSound(defaultSong)
-            .setSmallIcon(R.drawable.fruits)
+            .setSmallIcon(R.drawable.chancay_logo)
             .setDefaults(Notification.DEFAULT_LIGHTS or Notification.DEFAULT_SOUND or Notification.DEFAULT_VIBRATE)
             .setContentTitle(title)
             .setContentText(message)

@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="match_parent"
+        tools:context=".SideBar">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:background="@color/colorAccent"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintHorizontal_bias="0.0"
+            android:id="@+id/linearLayout2">
+
+
+        <ImageButton
+                android:background="@android:color/transparent"
+                android:layout_width="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
+                android:layout_height="wrap_content" app:srcCompat="@drawable/ic_arrow_white"
+                android:id="@+id/imageView10"/>
+        <ImageView
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="100dp"
+                android:layout_height="100dp" app:srcCompat="@drawable/mc_logo" android:id="@+id/imageView9"
+        />
+        <TextView
+                android:layout_marginTop="5dp"
+                android:text="Francisco Córdoba Rojas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView25" android:textStyle="bold"
+                android:textSize="16sp" android:textAlignment="center" android:textColor="@android:color/white"/>
+        <TextView
+                android:text="@fcordoba"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/textView26"
+                android:textColor="@android:color/white" android:textAlignment="center"/>
+    </LinearLayout>
+
+    <LinearLayout
+            android:background="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout3">
+        <TextView
+                android:layout_marginStart="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Pago"
+                android:layout_marginBottom="5dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+        />
+
+    </LinearLayout>
+    <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:background="@android:color/white" android:layout_width="match_parent"
+            android:layout_height="wrap_content" app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+        <ImageView
+                android:layout_marginStart="20dp"
+                android:layout_gravity="center_vertical"
+                android:layout_width="24dp"
+                android:layout_height="24dp" app:srcCompat="@drawable/ic_credit_card_black_24dp"
+                android:id="@+id/imageView11"/>
+        <TextView
+                android:layout_marginStart="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Medios de Pago"
+        />
+
+
+    </LinearLayout>
+    <LinearLayout
+            android:background="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout5">
+        <TextView
+                android:layout_marginStart="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Seguridad"
+                android:layout_marginBottom="5dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+        />
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+                  android:id="@+id/linearLayout6"
+                  android:orientation="horizontal"
+                  app:layout_constraintTop_toBottomOf="@+id/linearLayout5"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  android:baselineAligned="false"
+                  app:layout_constraintStart_toStartOf="parent"
+                  android:background="@android:color/white"
+                  android:layout_height="wrap_content">
+
+        <TextView
+                android:layout_marginStart="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Desbloquear con Touch ID"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+            android:background="@color/colorPrimary"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/linearLayout7">
+        <TextView
+                android:layout_marginStart="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Legal"
+                android:layout_marginBottom="5dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:id="@+id/linearLayout8"
+                  android:orientation="horizontal"
+                  app:layout_constraintTop_toBottomOf="@+id/linearLayout7"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  android:baselineAligned="false"
+                  app:layout_constraintStart_toStartOf="parent"
+                  android:background="@android:color/white"
+                  android:layout_height="wrap_content">
+
+        <TextView
+                android:layout_marginStart="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Términos y condiciones"
+        />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:orientation="horizontal"
+                  app:layout_constraintTop_toBottomOf="@+id/divider2"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  android:baselineAligned="false"
+                  app:layout_constraintStart_toStartOf="parent"
+                  android:background="@android:color/white"
+                  android:layout_height="wrap_content">
+
+        <TextView
+                android:layout_marginStart="20dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorAccent"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Políticas de Privacidad"
+        />
+    </LinearLayout>
+    <Button
+            android:text="Cerrar Sesión"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_no_border"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/button3" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintBottom_toBottomOf="parent"/>
+    <View
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout8"
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</android.support.constraint.ConstraintLayout>

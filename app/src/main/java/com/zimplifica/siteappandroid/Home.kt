@@ -36,6 +36,7 @@ class Home : AppCompatActivity() {
     private val PAYMENT_REQUEST = 234
     lateinit var moneyTextView: MoneyTextView
     lateinit var requestBtn : Button
+    lateinit var sideBarBtn : ImageButton
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +51,7 @@ class Home : AppCompatActivity() {
         //amount.visibility = View.GONE
         //keyboard.setTextView(amount)
         keyboard.setMoneyTextView(moneyTextView)
+        sideBarBtn = findViewById(R.id.side_bar_home_btn)
         requestBtn = findViewById(R.id.request_btn_home)
         payButton = findViewById(R.id.pay_btn_home)
         payButton.setOnClickListener {
@@ -65,67 +67,62 @@ class Home : AppCompatActivity() {
                 val value = moneyTextView.amount.toInt()
                 val intent = Intent(this,PaymentRequest::class.java)
                 intent.putExtra("amount", value.toString())
+                intent.putExtra("request", false)
                 startActivityForResult(intent,PAYMENT_REQUEST)
             }
-
         }
 
         requestBtn.setOnClickListener {
-            val i = Intent(Intent.ACTION_PICK)
-            i.type = ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE
-            startActivityForResult(i, 2)
+            if(moneyTextView.amount.toInt() == 0){
+                val view = findViewById<View>(android.R.id.content)
+                val snackBar = Snackbar.make(view,"Ingrese un Monto válido", Snackbar.LENGTH_LONG)
+                snackBar.view.setOnClickListener {
+                    snackBar.dismiss()
+                }
+                snackBar.show()
+            }
+            else{
+                val value = moneyTextView.amount.toInt()
+                val intent = Intent(this,PaymentRequest::class.java)
+                intent.putExtra("amount", value.toString())
+                intent.putExtra("request", true)
+                startActivityForResult(intent,PAYMENT_REQUEST)
+            }
         }
         activityBtn.setOnClickListener {
             val intent = Intent(this, ActivityScreen::class.java)
             intent.putExtra("activityList", activityList as Serializable)
             startActivity(intent)
         }
-
+        sideBarBtn.setOnClickListener {
+            val intent = Intent(this,SideBar::class.java)
+            startActivity(intent)
+        }
+        /*
         activityList.add( Bill(
             UUID.randomUUID(),"McDonalds La Tropicana",
             "Combo 3. Combo Agrandado. Papas Ext...","₡ 2.550,00","Francisco Córdoba Rojas",
-            " 29/01/2019", "7:30pm"))
+            " 29/01/2019", "7:30", "Restaurante", false))
         activityList.add( Bill(
             UUID.randomUUID(),"Feria Del Agricultor",
             "","₡ 5.850,00","Francisco Córdoba Rojas",
-            " 20/01/2019", "9:45pm"))
+            " 20/01/2019", "9:45", "Alimentos", false))
         activityList.add( Bill(
             UUID.randomUUID(),"Repuestos La Guacamaya",
             "","₡ 16.000,00","Francisco Córdoba Rojas",
-            " 20/01/2019", "12:30pm"))
+            " 20/01/2019", "12:30","Repuestos", false))
+       */
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == PAYMENT_REQUEST){
             if(resultCode == Activity.RESULT_OK){
+                moneyTextView.amount = 0F
                 val result = data?.getSerializableExtra("bill") as Bill
                 activityList.add(0,result)
                 //sendNotification("Pago realizado con éxito", "Su pago a ${result.enterprise}$ fue realizado de manera correcta. ")
             }
         }
-    }
-
-    fun sendNotification(message : String, title : String){
-        val defaultSong = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val channelId = getString(R.string.default_notification_channel_id)
-        val notification = NotificationCompat.Builder(this, channelId)
-            .setSound(defaultSong)
-            .setSmallIcon(R.drawable.fruits)
-            .setContentTitle(title)
-            .setContentText(message)
-            .setAutoCancel(true)
-            .setStyle(
-                NotificationCompat.BigTextStyle()
-                    .bigText(message))
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val channel = NotificationChannel(channelId,
-                "Channel human readable title",
-                NotificationManager.IMPORTANCE_DEFAULT)
-            manager.createNotificationChannel(channel)
-        }
-
-        manager.notify(/*notification id*/0,notification.build())
     }
 }
